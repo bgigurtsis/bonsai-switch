@@ -9,31 +9,47 @@ community integration, not an official release from Prism ML, Continuum AI, or L
 
 ## Quick install
 
-Install and open [LM Studio](https://lmstudio.ai/download) in `/Applications` first.
-You also need Apple Command Line Tools, which include Git. If you do not have
-them, run `xcode-select --install` in Terminal and follow the prompts.
-These are the only things you need to install yourself.
+1. **Install LM Studio.** Download it from [lmstudio.ai](https://lmstudio.ai/download),
+   put it in `/Applications`, and open it once.
+
+2. **Install Apple's Command Line Tools if needed.** Open Terminal, run the command
+   below, and follow the prompts. If they are already installed, skip this step.
+
+   ```sh
+   xcode-select --install
+   ```
+
+3. **Download and install this setup.** Run these commands in Terminal. The installer
+   downloads both model formats and the software they need, so this may take a while.
+
+   ```sh
+   git clone https://github.com/bgigurtsis/orcabonsai-lmstudio-adapter.git
+   cd orcabonsai-lmstudio-adapter
+   ./Install.command
+   ```
+
+4. **Start the servers.** In the same Terminal window, run:
+
+   ```sh
+   ./Launch.command
+   ```
+
+5. **Choose the plugin in LM Studio.** Select
+   **bgigurtsis/orcabonsai-lmstudio-adapter** from the top model selector.
+
+6. **Choose your model and chat.** In Configuration, choose **Bonsai 2 (native)**
+   or **OrcaBonsai (MLX)**, then send a message. Leave Reasoning Off to see Orca's
+   reply as it writes.
+
 No separate Python, Node, npm, or API key is required.
 
-```sh
-git clone https://github.com/bgigurtsis/orcabonsai-lmstudio-adapter.git
-cd orcabonsai-lmstudio-adapter
-./Install.command
-./Launch.command
-```
+Keep the launcher's Terminal window open while chatting. Press **Ctrl-C** when
+finished to stop the servers it started. Next time, just open `Launch.command`.
+Keep the downloaded project folder in place: its `.runtime/` folder holds the models.
 
-Alternatively download this repository as a ZIP, unzip into a permanent folder,
-and open `Install.command`, followed by `Launch.command`. Git/Command Line Tools
-are still needed to fetch the upstream source repositories.
-
-In LM Studio:
-
-1. Select **bgigurtsis/orcabonsai-lmstudio-adapter** from the top model selector.
-2. In Configuration, choose **Bonsai 2 (native)** or **OrcaBonsai (MLX)**.
-3. Send a message. Reasoning defaults to Off.
-
-Keep the launcher's terminal open. **Ctrl-C stops the servers it started** when you finish. Open `Launch.command` next time. Keep the repository
-folder in place: the downloads are stored inside it in a folder called `.runtime/`.
+If you prefer downloading a ZIP, unzip this repository into a permanent folder
+instead of running `git clone`, then open `Install.command` and `Launch.command`
+in that order. You still need Apple's Command Line Tools from step 2.
 
 ## Why download two model formats?
 
