@@ -57,6 +57,21 @@ If you prefer downloading a ZIP, unzip this repository into a permanent folder
 instead of running `git clone`, then open `Install.command` and `Launch.command`
 in that order. You still need Apple's Command Line Tools from step 2.
 
+## How to stop and restart
+
+1. Go to the Terminal window opened by `Launch.command`.
+2. Press **Control-C** (hold Control and press C, not Command-C).
+3. Wait for **“Servers stopped. You can close this Terminal window.”** This can
+   take up to 20 seconds while the two servers shut down.
+4. Close the Terminal window. To start again, open `Launch.command`.
+
+The **Stop** button in LM Studio stops only the current reply. Closing LM Studio
+alone does not stop the servers or free their model memory. Keep the launcher's
+Terminal window open while using the models; use Control-C when you are finished.
+
+The launcher stops only servers it started. If it says a server was already
+running, that server belongs to another launcher and must be stopped there.
+
 ## Why download two model formats?
 
 One copy of the MLX model can run both versions. The upstream Orca software has

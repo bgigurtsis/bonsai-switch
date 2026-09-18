@@ -18,11 +18,13 @@ ORCA_PORT = int(os.environ.get('ORCABONSAI_PORT', '18123'))
 
 
 def commands():
-    model = DATA / 'gguf/Ternary-Bonsai-2-27B-PQ2_0.gguf'
-    native = DATA / 'bonsai/bin/mac/llama-server'
-    python = DATA / 'python/bin/python'
-    required = [model, native, python, DATA / 'mlx/config.json',
-                DATA / 'mlx/runtime/vision_artifact.py', DATA / 'orca/directions/refusal_dir.safetensors']
+    upstream = Path(os.environ.get('ORCABONSAI_UPSTREAM', DATA / 'orca')).resolve()
+    pack = Path(os.environ.get('ORCABONSAI_PACK', DATA / 'mlx')).resolve()
+    model = Path(os.environ.get('BONSAI_MODEL', DATA / 'gguf/Ternary-Bonsai-2-27B-PQ2_0.gguf'))
+    native = Path(os.environ.get('BONSAI_NATIVE', DATA / 'bonsai/bin/mac/llama-server'))
+    python = Path(os.environ.get('ORCABONSAI_PYTHON', DATA / 'python/bin/python'))
+    required = [model, native, python, pack / 'config.json',
+                pack / 'runtime/vision_artifact.py', upstream / 'directions/refusal_dir.safetensors']
     missing = [str(path) for path in required if not path.exists()]
     if missing:
         raise RuntimeError('Installation is incomplete. Run Install.command. Missing: ' + ', '.join(missing))
@@ -66,7 +68,8 @@ def main(check=False):
         print('All required model and runtime paths exist. Model loading is checked on first generation.')
         return
     DATA.mkdir(exist_ok=True)
-    env = dict(os.environ, ORCABONSAI_UPSTREAM=str(DATA / 'orca'), ORCABONSAI_PACK=str(DATA / 'mlx'),
+    env = dict(os.environ, ORCABONSAI_UPSTREAM=os.environ.get('ORCABONSAI_UPSTREAM', str(DATA / 'orca')),
+               ORCABONSAI_PACK=os.environ.get('ORCABONSAI_PACK', str(DATA / 'mlx')),
                ORCABONSAI_PORT=str(ORCA_PORT), PYTHONUNBUFFERED='1')
     processes, logs = [], []
     def interrupted(signum, frame):
@@ -100,6 +103,8 @@ def main(check=False):
         stop(processes)
         for log in logs:
             log.close()
+        if processes:
+            print('Servers stopped. You can close this Terminal window.', flush=True)
 
 
 if __name__ == '__main__':
