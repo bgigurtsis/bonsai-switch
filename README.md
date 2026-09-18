@@ -153,6 +153,13 @@ components come from other projects. We do not upload model weights, direction a
 LM Studio, credentials, or installed environments. The installer downloads external
 components separately with their upstream licenses and notices intact.
 
+## Tested on
+
+Tested locally on a **MacBook Air with an Apple M5 chip and 32 GB of unified
+memory**, running macOS 27.0. This is the machine used for the local model setup,
+regression tests, and plugin installation checks. Other Mac configurations have
+not been tested, and a complete install on a clean Mac is still unverified.
+
 ## Development
 
 After installation:
