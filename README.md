@@ -4,6 +4,12 @@ Run **Bonsai 2** and **OrcaBonsai** locally and switch between them with a dropd
 in LM Studio. The installer downloads the model files and the software needed to run them,
 then adds a plugin to LM Studio.
 
+[OrcaBonsai](https://github.com/Continuum-AI-Corp/OrcaBonsai-27B-Uncensored)
+is an abliterated version of
+[Bonsai 2](https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-mlx-2bit):
+it uses the same base model, with changes intended to reduce its refusal behavior.
+It is not a separate model trained from scratch.
+
 **Experimental first release. Apple Silicon macOS only.** This is an independent
 community integration, not an official release from Prism ML, Continuum AI, or LM Studio.
 
