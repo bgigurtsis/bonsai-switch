@@ -1,8 +1,8 @@
 # OrcaBonsai LM Studio Adapter
 
 Run **Bonsai 2** and **OrcaBonsai** locally and switch between them with a dropdown
-in LM Studio. The installer downloads both model formats, Python dependencies,
-native runtime, and installs the included LM Studio plugin.
+in LM Studio. The installer downloads the model files and the software needed to run them,
+then adds a plugin to LM Studio.
 
 **Experimental first release. Apple Silicon macOS only.** This is an independent
 community integration, not an official release from Prism ML, Continuum AI, or LM Studio.
@@ -10,8 +10,9 @@ community integration, not an official release from Prism ML, Continuum AI, or L
 ## Quick install
 
 Install and open [LM Studio](https://lmstudio.ai/download) in `/Applications` first.
-Apple Command Line Tools must be present for Git; if missing, follow Apple's
-`xcode-select --install` prompt and rerun. These are the only manual prerequisites.
+You also need Apple Command Line Tools, which include Git. If you do not have
+them, run `xcode-select --install` in Terminal and follow the prompts.
+These are the only things you need to install yourself.
 No separate Python, Node, npm, or API key is required.
 
 ```sh
@@ -31,48 +32,73 @@ In LM Studio:
 2. In Configuration, choose **Bonsai 2 (native)** or **OrcaBonsai (MLX)**.
 3. Send a message. Reasoning defaults to Off.
 
-Keep the launcher's terminal open. **Ctrl-C stops the servers it started** without
-leaving background GPU workers. Open `Launch.command` next time. Keep the repository
-folder in place: its ignored `.runtime/` directory holds the downloaded components.
+Keep the launcher's terminal open. **Ctrl-C stops the servers it started** when you finish. Open `Launch.command` next time. Keep the repository
+folder in place: the downloads are stored inside it in a folder called `.runtime/`.
+
+## Why download two model formats?
+
+One copy of the MLX model can run both versions. The upstream Orca software has
+an `alpha` setting:
+
+- `alpha=0` turns off Orca's changes and runs the original Bonsai model.
+- `alpha=1` turns on Orca's changes and runs OrcaBonsai.
+
+That approach worked, but both choices still used MLX, the software that runs
+that model format. In our local setup, original Bonsai appeared faster using
+Prism's native runner instead. We have not done a controlled speed comparison,
+so this is an observation, not a promise about performance on your Mac.
+
+This package therefore downloads the same base model in two formats:
+
+- **GGUF** for original Bonsai, using Prism's native runner.
+- **MLX** for OrcaBonsai, using the Orca software with `alpha=1`.
+
+This takes more disk space than sharing one MLX copy. It keeps the two ways of
+running the models that we used locally. The LM Studio dropdown chooses between
+these two runners; it does not change `alpha` on a shared model. You do not need
+to edit `alpha` yourself. A smaller, single-model install is not included here.
 
 ## What gets installed
 
-- A pinned Astral uv release and private Python 3.12 environment.
-- Fixed upstream revisions of Bonsai-demo and OrcaBonsai.
-- A tested Prism llama.cpp binary release and official GGUF and MLX model snapshots.
-- Orca's Python dependencies plus the local API server dependencies.
-- This repository's newly written LM Studio plugin, under its own name.
+The installer downloads both model formats, the software that runs them, a
+private copy of Python 3.12, and the Python packages they need. It also installs
+this project's LM Studio plugin. It uses specific versions of the main components
+so people get the same setup. It does not overwrite your existing Bonsai setup.
 
-Allow **at least 25 GiB free disk space** before installation; more is preferable
-for caches and updates. Both are 27B model formats, so the download is substantial
-and duration depends on your connection. A Mac with 32 GB or more unified memory
-is recommended, with more room useful for long context and other apps. No minimum
-memory or throughput benchmark is claimed.
+Allow **at least 25 GiB of free disk space**; leave more room for temporary
+files and future updates. The downloads are large and may take a while.
+We suggest a Mac with **32 GB of memory or more**, but have not tested the minimum
+memory requirement. Long conversations and other open apps need extra memory.
 
-The installer checks required files. The MLX model loads on its first generation;
-a listening server alone does not establish that model loading has completed.
-Repeated installation will not reset modified upstream checkouts. If a later release
-changes the pinned commits, use a fresh directory. For a read-only source plan,
-run `python3 installer.py --plan` with Python 3.12 or newer.
+Orca loads its model into memory when you send the first message, so that reply
+can take longer. The installer checks that the required files exist; this does
+not prove the model will load successfully on every Mac.
 
-## Behavior
+If a future release changes the downloaded software versions, install it in a
+new folder. Rerunning the installer does not reset changes you made to downloaded
+source code. Developers can see the selected versions without downloading them
+by running `python3 installer.py --plan` with Python 3.12 or newer.
 
-| Selection | Backend | Default endpoint |
+## Using the models
+
+| Model | Software used to run it | Local address |
 | --- | --- | --- |
 | Bonsai 2 | Native Prism llama.cpp, original GGUF | `http://127.0.0.1:18124/v1` |
 | OrcaBonsai | Python/MLX using upstream Orca | `http://127.0.0.1:18123/v1` |
 
 - Text chat only in this release. Images, attachments, and tool integrations are
   unsupported; disable integrations and use a fresh text-only conversation.
-- Ordinary Orca replies stream. Reasoning-enabled replies are currently buffered
-  until completion; use Off for immediate visible text.
-- No default or hard output-token cap is imposed by the Orca API or plugin.
-  Generation ends naturally or when you press Stop. Explicit budgets from other
-  API clients are honored. Underlying context and memory limits still apply.
-- One Orca generation runs at a time. Concurrent requests receive a clear busy
-  error instead of silently waiting. Stop the other chat or wait, then retry.
-- Chat traffic stays on loopback. Downloads contact upstream providers, but chat
-  messages are not sent to them. The plugin accepts only loopback HTTP endpoints.
+- With Reasoning set to Off, Orca shows its reply as it writes. With Reasoning
+  enabled, the reply appears only after it finishes.
+- The plugin and Orca server do not set a maximum reply length by default.
+  A reply ends when the model finishes or you press Stop. Other apps calling the
+  server can request a length limit. The model still has memory and conversation
+  length limits.
+- Orca answers one message at a time. If another chat is using it, you will
+  see a busy message. Stop the other reply or wait for it to finish, then retry.
+- The plugin sends your messages to servers on your own Mac. Installation
+  needs internet access to download files; your chats are not sent to those
+  download providers.
 - Existing plugins and Bonsai installations are not overwritten.
 
 ## Troubleshooting
@@ -95,12 +121,13 @@ Thanks to [PrismML-Eng/Bonsai-demo](https://github.com/PrismML-Eng/Bonsai-demo),
 [Continuum-AI-Corp/OrcaBonsai](https://github.com/Continuum-AI-Corp/OrcaBonsai-27B-Uncensored),
 Prism ML, Alibaba Cloud/Qwen, Apple MLX, and LM Studio.
 The prototype used [ankh/openai-compat-endpoint](https://lmstudio.ai/ankh/openai-compat-endpoint),
-whose published ancestry credits tupik and will-lms. Their plugin implementation
-is not copied here: the shipped plugin is newly authored against the public SDK.
+which credits earlier work by tupik and will-lms. This package includes a newly
+written plugin using LM Studio's public development tools, rather than a copy
+of their plugin.
 
 This repository uses [Apache-2.0](LICENSE). [NOTICE](NOTICE) and the
-[redistribution review](docs/redistribution.md) identify derived code and external
-components. We do not upload model weights, direction artifacts, native binaries,
+[redistribution review](docs/redistribution.md) explain which code was adapted and which
+components come from other projects. We do not upload model weights, direction artifacts, native binaries,
 LM Studio, credentials, or installed environments. The installer downloads external
 components separately with their upstream licenses and notices intact.
 
@@ -114,6 +141,6 @@ After installation:
 
 Regression tests cover streaming before completion, Unicode, cancellation, busy
 rejection, uncapped output, missing files, paths with spaces, and refusing to reset
-a different upstream revision. The plugin is TypeScript-checked and its installation
-into LM Studio is tested. This first release has not had a complete clean-machine
-multi-gigabyte install; tests used an existing dependency environment and model files.
+a different upstream revision. The plugin passes its TypeScript checks and was installed
+successfully into LM Studio. **We have not yet tested the whole installation on
+a clean Mac.** Tests used software and model files already on the development Mac.
