@@ -2,6 +2,6 @@
   "type": "plugin",
   "runner": "node",
   "owner": "bgigurtsis",
-  "name": "orcabonsai-lmstudio-adapter",
+  "name": "bonsai-switch",
   "revision": 1
 }

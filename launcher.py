@@ -89,7 +89,7 @@ def main(check=False):
                 time.sleep(0.5)
             print(f'{model} ready on port {port}.', flush=True)
         subprocess.run(['open', '-a', 'LM Studio'], check=True)
-        print('Select bgigurtsis/orcabonsai-lmstudio-adapter, then choose a model.\nKeep this terminal open. Ctrl-C stops servers started by this launcher.', flush=True)
+        print('Select bgigurtsis/bonsai-switch, then choose a model.\nKeep this terminal open. Ctrl-C stops servers started by this launcher.', flush=True)
         while processes:
             if any(process.poll() is not None for process in processes):
                 raise RuntimeError('A server exited. Inspect the .runtime logs before restarting.')

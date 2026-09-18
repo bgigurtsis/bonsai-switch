@@ -101,7 +101,7 @@ def install() -> None:
     script = downloader.read_text()
     if 'prism-b10683-d8f26ee' in script:
         script = script.replace('prism-b10683-d8f26ee', 'prism-b10687-5d80cff')
-        script = script.replace('#!/bin/sh', '#!/bin/sh\n# Modified by orcabonsai-lmstudio-adapter: pinned tested native release.', 1)
+        script = script.replace('#!/bin/sh', '#!/bin/sh\n# Modified by bonsai-switch: pinned tested native release.', 1)
         downloader.write_text(script)
     run(['sh', str(downloader)], bonsai)
     download_model(python, 'prism-ml/Ternary-Bonsai-2-27B-gguf', GGUF_REV, DATA / 'gguf',
@@ -113,7 +113,7 @@ def install() -> None:
     run([str(node), str(ROOT / 'plugin/node_modules/typescript/bin/tsc'), '--noEmit'], ROOT / 'plugin')
     run([str(lms), 'dev', '--install', '--yes'], ROOT / 'plugin', env)
     run([str(python), str(ROOT / 'launcher.py'), '--check'])
-    print('\nInstalled. Open Launch.command, then choose bgigurtsis/orcabonsai-lmstudio-adapter in LM Studio.')
+    print('\nInstalled. Open Launch.command, then choose bgigurtsis/bonsai-switch in LM Studio.')
     print('Use its Model dropdown to switch between Bonsai 2 and OrcaBonsai.')
 
 
@@ -123,6 +123,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.plan:
         print(json.dumps({'bonsai': BONSAI_REV, 'orca': ORCA_REV, 'gguf': GGUF_REV, 'mlx': MLX_REV,
-                          'directory': str(DATA), 'plugin': 'bgigurtsis/orcabonsai-lmstudio-adapter'}, indent=2))
+                          'directory': str(DATA), 'plugin': 'bgigurtsis/bonsai-switch'}, indent=2))
     else:
         install()

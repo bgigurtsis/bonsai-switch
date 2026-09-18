@@ -51,7 +51,7 @@ EFFORT_MAP = {
     "max": "xhigh",
 }
 
-app = FastAPI(title="OrcaBonsai LM Studio Adapter")
+app = FastAPI(title="Bonsai Switch")
 _lock = threading.Lock()
 _admission = threading.Lock()
 _state: dict[str, Any] = {}
@@ -340,7 +340,7 @@ async def _as_sse(payload: dict[str, Any]):
 
 @app.get("/health")
 def health() -> dict[str, Any]:
-    return {"status": "ok", "service": "orcabonsai-lmstudio-adapter", "loaded": bool(_state), "busy": _admission.locked()}
+    return {"status": "ok", "service": "bonsai-switch", "loaded": bool(_state), "busy": _admission.locked()}
 
 
 @app.get("/v1/models")

@@ -1,4 +1,4 @@
-# OrcaBonsai LM Studio Adapter
+# Bonsai Switch for LM Studio
 
 Run **Bonsai 2** and **OrcaBonsai** locally and switch between them with a dropdown
 in LM Studio. The installer downloads the model files and the software needed to run them,
@@ -29,8 +29,8 @@ community integration, not an official release from Prism ML, Continuum AI, or L
    downloads both model formats and the software they need, so this may take a while.
 
    ```sh
-   git clone https://github.com/bgigurtsis/orcabonsai-lmstudio-adapter.git
-   cd orcabonsai-lmstudio-adapter
+   git clone https://github.com/bgigurtsis/bonsai-switch.git
+   cd bonsai-switch
    ./Install.command
    ```
 
@@ -41,7 +41,7 @@ community integration, not an official release from Prism ML, Continuum AI, or L
    ```
 
 5. **Choose the plugin in LM Studio.** Select
-   **bgigurtsis/orcabonsai-lmstudio-adapter** from the top model selector.
+   **bgigurtsis/bonsai-switch** from the top model selector.
 
 6. **Choose your model and chat.** In Configuration, choose **Bonsai 2 (native)**
    or **OrcaBonsai (MLX)**, then send a message. Leave Reasoning Off to see Orca's

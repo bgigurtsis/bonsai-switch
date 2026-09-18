@@ -1,4 +1,4 @@
-OrcaBonsai LM Studio Adapter
+Bonsai Switch
 An independent community integration maintained by bgigurtsis.
 
 backend/generation.py derives from the sample and generate functions in:
