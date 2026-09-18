@@ -1,0 +1,9 @@
+{
+  "name": "orcabonsai-lmstudio-adapter",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "description": "Local Bonsai and OrcaBonsai chat for LM Studio",
+  "dependencies": { "@lmstudio/sdk": "1.4.0" },
+  "devDependencies": { "typescript": "5.9.3", "@types/node": "22.10.2" }
+}

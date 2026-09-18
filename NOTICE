@@ -1,0 +1,24 @@
+OrcaBonsai LM Studio Adapter
+An independent community integration maintained by bgigurtsis.
+
+backend/generation.py derives from the sample and generate functions in:
+Continuum-AI-Corp/OrcaBonsai-27B-Uncensored, run.py
+https://github.com/Continuum-AI-Corp/OrcaBonsai-27B-Uncensored
+Revision 947a80cd1d3b4f9a97417025e6c2c62223571287
+Upstream declares Apache License 2.0. Modifications add streamed progress,
+cancellation, and generation without an implicit output-token cap.
+
+External downloaded components include Bonsai-demo (PrismML-Eng),
+OrcaBonsai (Continuum-AI-Corp/OrcaRouter), and Prism ML's model packs.
+Created using Bonsai by Prism ML.
+The model pack credits Prism ML, Inc. and Alibaba Cloud/Qwen and includes
+MIT-licensed Apple runtime code. Original notices remain with the downloads.
+These model/runtime artifacts are not part of this source release.
+
+The local prototype used ankh/openai-compat-endpoint; its Hub ancestry
+credits tupik/openai-compat-endpoint and will-lms/openai-compat-endpoint.
+Their plugin implementation is not included. This repository's plugin is
+newly authored against the public LM Studio SDK.
+
+Project and product names identify compatibility and origin only.
+No endorsement by upstream authors is claimed.

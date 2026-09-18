@@ -1,0 +1,17 @@
+.DS_Store
+.runtime/
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+node_modules/
+dist/
+.lmstudio/
+install-state.json
+models/
+*.gguf
+*.safetensors
+*.log
